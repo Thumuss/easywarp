@@ -1,0 +1,177 @@
+name: EasyWarp
+version: '${project.version}'
+main: eu.thumus.easywarp.Main
+api-version: '1.21'
+author: Thumus <https://github.com/Thumuss>
+website: thumus.eu
+prefix: EasyWarp
+
+description: | 
+  Un plugin pour faire des warp très facilement
+  Pour le moment uniquement en français.
+  /w help ou /help easywarp pour obtenir de l'aide
+
+commands:
+  ec:
+    description: Permet d'accéder à son ender chest
+    aliases: [enderchest]
+    permission: easywarp.ec.self
+    usage: /ec
+  warp:
+    description: Permet de se tp à une warp set par un admin
+    aliases: [w, wp]
+    permission: easywarp.warp.use
+    usage: |
+      /warp
+      /wp set Warp_Que_tu_Veux
+      /w set Warp_Que_tu_Veux stone
+      /w delete Warp_Que_tu_Veux
+      /w edit Warp_Que_tu_Veux chest
+      /w reload
+  pwarp:
+    description: Permet de se tp à un warp que tu as set.
+    aliases: [p, pw, pwp]
+    permission: easywarp.pwarp.self.use
+    usage: |
+      /pwarp
+      /pwp set Warp_Que_tu_Veux
+      /pw set Warp_Que_tu_Veux stone
+      /p delete Warp_Que_tu_Veux
+      /p edit Warp_Que_tu_Veux chest
+      /p reload
+  rename:
+    description: Rename un item
+    aliases: [rn, rname]
+    permission: easywarp.rename
+    usage: /rename le nom que tu veux
+  spec:
+    description: Désactive/active le ramassage d'items
+    aliases: [sp]
+    permission: easywarp.spec
+    usage: /spec
+  setlore:
+    description: Change le lore d'un item
+    aliases: [sl]
+    permission: easywarp.setlore
+    usage: /sl le message que tu veux;des points virgules pour changer;de;ligne. 
+  wb:
+    description: Ouvre une table de craft
+    aliases: [workbench]
+    permission: easywarp.wb
+    usage: /wb
+
+
+permissions:
+  easywarp.*: 
+    default: op
+    description: All permissions
+    children:
+      easywarp.ec.*: true
+      easywarp.rename: true
+      easywarp.setlore: true
+      easywarp.wb: true
+      easywarp.spec: true
+      easywarp.warp.*: true
+      easywarp.pwarp.*: true
+  easywarp.rename: 
+    default: not op
+    description: Can rename an item.
+  easywarp.setlore:
+    description: Can change the lore of an item
+  easywarp.wb:
+    default: op
+    description: Use a crafting table  
+  easywarp.spec:
+    default: op
+    description: Stop spec command
+  easywarp.ec.*:
+    default: op
+    description: Open an enderchest
+    children:
+      easywarp.ec.self: true
+      easywarp.ec.other: true
+  easywarp.ec.self:
+    default: op
+    description: Open your enderchest
+  easywarp.ec.other:
+    default: op
+    description: Open other enderchest
+  easywarp.warp.*:
+    default: op
+    description: All 
+    children:
+        easywarp.warp.use: true
+        easywarp.warp.set: true
+        easywarp.warp.delete: true
+        easywarp.warp.edit: true
+        easywarp.warp.reload: true
+  easywarp.warp.use:
+    default: not op
+    description: Allow using warp
+  easywarp.warp.set:
+    default: op
+    description: Allow setting warp
+  easywarp.warp.delete:
+    default: op
+    description: Allow deleting warp
+  easywarp.warp.edit:
+    default: op
+    description: Allow editing warp
+  easywarp.warp.reload:
+    default: op
+    description: Allow reloading warp
+  easywarp.pwarp.self.*:
+    default: not op
+    description: Allow all pwarp self
+    children:
+      easywarp.warp.self.use: true
+      easywarp.warp.self.set: true
+      easywarp.warp.self.delete: true
+      easywarp.warp.self.edit: true
+      easywarp.warp.self.reload: true
+  easywarp.pwarp.self.use:
+    default: not op
+    description: Allow using pwarp self
+  easywarp.pwarp.self.set:
+    default: not op
+    description: Allow setting pwarp self
+  easywarp.pwarp.self.delete:
+    default: not op
+    description: Allow deleting pwarp self
+  easywarp.pwarp.self.edit:
+    default: not op
+    description: Allow editing pwarp self
+  easywarp.pwarp.self.reload:
+    default: not op
+    description: Allow reloading pwarp self
+  easywarp.pwarp.other.*:
+    default: not op
+    description: Allow all pwarp other
+    children:
+      easywarp.warp.other.use: true
+      easywarp.warp.other.set: true
+      easywarp.warp.other.delete: true
+      easywarp.warp.other.edit: true
+      easywarp.warp.other.reload: true
+  easywarp.pwarp.other.use:
+    default: not op
+    description: Allow using pwarp other
+  easywarp.pwarp.other.set:
+    default: not op
+    description: Allow setting pwarp other
+  easywarp.pwarp.other.delete:
+    default: not op
+    description: Allow deleting pwarp other
+  easywarp.pwarp.other.edit:
+    default: not op
+    description: Allow editing pwarp other
+  easywarp.pwarp.other.reload:
+    default: not op
+    description: Allow reloading pwarp other
+  easywarp.pwarp.*:
+    default: not op
+    description: Allow all pwarp 
+    children:
+      easywarp.warp.other.*: true
+      easywarp.warp.self.*: true
+
