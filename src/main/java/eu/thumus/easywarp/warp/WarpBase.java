@@ -1,5 +1,7 @@
 package eu.thumus.easywarp.warp;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,40 +13,67 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import eu.thumus.easywarp.Main;
+import eu.thumus.easywarp.utils.ConfigGenerator;
 
 public abstract class WarpBase implements Listener {
 
     protected Main plugin;
-    protected HashMap<String, Inventory> inv;
-    protected HashMap<String, ArrayList<Location>> lcs;
+    public HashMap<String, Inventory> inv;
+    public HashMap<String, ArrayList<Location>> lcs;
     protected FileConfiguration Fc;
+    public File file;
+    protected  boolean usingPlayerUID = false;
 
     public static final String MATERIAL_NAME = "DARK_OAK_BUTTON";
 
-    public WarpBase(final Main plugin) {
-        this.create(plugin);
+    final private String name;
+    final private String strKeyBase;
+
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public WarpBase(final Main plugin, final String strKey, String name) {
+        this.create(plugin, strKey, name);
+        this.name = name;
+        strKeyBase = strKey;
     }
 
-    public void create(Main plugin) {
+    public void create(Main plugin, String strKey, String name) {
         this.plugin = plugin;
-        Fc = plugin.getConfig();
+        Fc = plugin.warpConfig;
+        file = ConfigGenerator.SF.get("warp");
         lcs = new HashMap<>();
         inv = new HashMap<>();
     }
 
-    
+    public void softCreate(final String strKey) {
+        Fc = plugin.warpConfig;
+        final ConfigurationSection playerStr = Fc.getConfigurationSection(strKey);
+        if (playerStr == null) {
+            Fc.createSection(strKey);
+            try {
+                Fc.save(file);
+            } catch (IOException e) {
+            }
+        }
+        Map<String, Object> values = playerStr == null ? new HashMap<>() : playerStr.getValues(false);
+        double size = values.size();
+        double result = Math.ceil(size / 9.0) * 9.0;
+        if (result < 9) {
+            result = (double) 9;
+        }
+        createInv((int) result, values, name, strKey);
+    }
 
     protected void createInv(int size, Map<String, Object> values, String name, String strKey) {
         final ArrayList<Location> lcss = new ArrayList<>();
@@ -76,6 +105,7 @@ public abstract class WarpBase implements Listener {
         return new Location(wl, memory.getDouble("x"), memory.getDouble("y"), memory.getDouble("z"), Float.parseFloat((String) memory.get("yaw", "1.0f")), Float.parseFloat((String) memory.get("pitch", "0.0f")));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     protected ItemStack createGuiItem(final Material material, final String name, final String... lore) {
         final ItemStack item = new ItemStack(material, 1);
         final ItemMeta meta = item.getItemMeta();
@@ -90,29 +120,26 @@ public abstract class WarpBase implements Listener {
 
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
-        // Check if player is not the holder and there are no blocks that can hold this inv
         final Player p = (Player) e.getWhoClicked();
-        if (e.getInventory() != this.inv.get(p.getUniqueId().toString())) {
+        
+        String key = usingPlayerUID ? p.getUniqueId().toString() : strKeyBase ;
+        Inventory invs = this.inv.get(key);
+
+        if (usingPlayerUID && e.getClickedInventory() != invs) {
             return;
         }
+
         e.setCancelled(true);
+
         final ItemStack clickedItem = e.getCurrentItem();
         if (clickedItem == null || clickedItem.getType() == Material.AIR) {
             return;
         }
-        p.teleport((Location) this.lcs.get(p.getUniqueId().toString()).get(e.getRawSlot()));
+        p.teleport((Location) this.lcs.get(key).get(e.getRawSlot()));
         p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 100.0f, 1.0f);
     }
 
-    @EventHandler
-    public void onInventoryClick(final InventoryDragEvent e) {
-        final Player p = (Player) e.getWhoClicked();
-        if (e.getInventory() == this.inv.get(p.getUniqueId().toString())) {
-            e.setCancelled(true);
-        }
-    }
-
     public void reload(final Main plugin) {
-        this.create(plugin);
+        this.create(plugin, strKeyBase, name);
     }
 }

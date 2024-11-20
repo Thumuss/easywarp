@@ -6,9 +6,11 @@ import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import eu.thumus.easywarp.utils.ConfigGenerator;
 import eu.thumus.easywarp.warp.WarpPerso;
 import eu.thumus.easywarp.warp.WarpW;
 
@@ -16,23 +18,23 @@ public final class Main extends JavaPlugin {
 
     public WarpW wr2;
     public WarpPerso wr3;
-    public NewWarp nw;
     private Commands cmds;
     @SuppressWarnings("NonConstantLogger")
     public Logger console;
+    public FileConfiguration warpConfig; 
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         console = getLogger();
+        warpConfig = ConfigGenerator.createConfig(this, "warp.yml", "warp");
+        console.log(Level.INFO, String.format("warpConfig %b", warpConfig == null));
         this.wr2 = new WarpW(this);
         this.wr3 = new WarpPerso(this);
-        this.nw = new NewWarp(this);
         cmds = new Commands(this);
         final PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(this.wr2, this);
         pm.registerEvents(this.wr3, this);
-        pm.registerEvents(this.nw, this);
         console.log(Level.INFO, "Le plugin s'est allumé");
     }
 

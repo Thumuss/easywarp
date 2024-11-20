@@ -1,7 +1,7 @@
 name: EasyWarp
 version: '${project.version}'
 main: eu.thumus.easywarp.Main
-api-version: '1.21'
+api-version: '1.13'
 author: Thumus <https://github.com/Thumuss>
 website: thumus.eu
 prefix: EasyWarp
@@ -31,7 +31,7 @@ commands:
   pwarp:
     description: Permet de se tp à un warp que tu as set.
     aliases: [p, pw, pwp]
-    permission: easywarp.pwarp.self.use
+    # permission: easywarp.pwarp.self.use
     usage: |
       /pwarp
       /pwp set Warp_Que_tu_Veux
@@ -120,58 +120,28 @@ permissions:
   easywarp.warp.reload:
     default: op
     description: Allow reloading warp
-  easywarp.pwarp.self.*:
-    default: not op
-    description: Allow all pwarp self
-    children:
-      easywarp.warp.self.use: true
-      easywarp.warp.self.set: true
-      easywarp.warp.self.delete: true
-      easywarp.warp.self.edit: true
-      easywarp.warp.self.reload: true
-  easywarp.pwarp.self.use:
-    default: not op
-    description: Allow using pwarp self
-  easywarp.pwarp.self.set:
-    default: not op
-    description: Allow setting pwarp self
-  easywarp.pwarp.self.delete:
-    default: not op
-    description: Allow deleting pwarp self
-  easywarp.pwarp.self.edit:
-    default: not op
-    description: Allow editing pwarp self
-  easywarp.pwarp.self.reload:
-    default: not op
-    description: Allow reloading pwarp self
-  easywarp.pwarp.other.*:
-    default: not op
-    description: Allow all pwarp other
-    children:
-      easywarp.warp.other.use: true
-      easywarp.warp.other.set: true
-      easywarp.warp.other.delete: true
-      easywarp.warp.other.edit: true
-      easywarp.warp.other.reload: true
-  easywarp.pwarp.other.use:
-    default: not op
-    description: Allow using pwarp other
-  easywarp.pwarp.other.set:
-    default: not op
-    description: Allow setting pwarp other
-  easywarp.pwarp.other.delete:
-    default: not op
-    description: Allow deleting pwarp other
-  easywarp.pwarp.other.edit:
-    default: not op
-    description: Allow editing pwarp other
-  easywarp.pwarp.other.reload:
-    default: not op
-    description: Allow reloading pwarp other
   easywarp.pwarp.*:
     default: not op
-    description: Allow all pwarp 
+    description: Allow all pwarp
     children:
-      easywarp.warp.other.*: true
-      easywarp.warp.self.*: true
+      easywarp.pwarp.use: true
+      easywarp.pwarp.set: true
+      easywarp.pwarp.delete: true
+      easywarp.pwarp.edit: true
+      easywarp.pwarp.reload: true
+  easywarp.pwarp.use:
+    default: not op
+    description: Allow using pwarp
+  easywarp.pwarp.set:
+    default: not op
+    description: Allow setting pwarp
+  easywarp.pwarp.delete:
+    default: not op
+    description: Allow deleting pwarp
+  easywarp.pwarp.edit:
+    default: not op
+    description: Allow editing pwarp
+  easywarp.pwarp.reload:
+    default: not op
+    description: Allow reloading pwarp
 
