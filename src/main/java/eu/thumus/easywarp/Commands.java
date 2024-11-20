@@ -75,6 +75,7 @@ public class Commands {
             return false;
         }
         final Player pl = (Player) sender;
+        if (args.length == 0) return warpUseCmd(pl, new String[0]);
         String arg0 = args[0];
         String[] newArgs = Arrays.copyOfRange(args, 1, args.length - 1);
 

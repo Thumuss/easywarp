@@ -1,6 +1,15 @@
-package eu.thumus.easywarp;
+package eu.thumus.easywarp.warp;
 
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -13,13 +22,10 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import eu.thumus.easywarp.Main;
 
 
-public class WarpW implements Listener
+public final class WarpW implements Listener
 {
     public Inventory inv;
     public ArrayList<Location> lcs;
@@ -34,12 +40,15 @@ public class WarpW implements Listener
         if (result < 9) { result = (double) 9; }
         this.inv = Bukkit.createInventory((InventoryHolder)null, (int)result, "Warp");
         final FileConfiguration Fc = plugin.getConfig();
-        this.lcs = new ArrayList<Location>();
+        this.lcs = new ArrayList<>();
         for (final Map.Entry<String, Object> entry : Fc.getConfigurationSection("warp").getValues(false).entrySet()) {
             final String key = entry.getKey();
             final MemorySection a = (MemorySection) entry.getValue();
-            this.inv.addItem(this.createGuiItem(Material.getMaterial((String)a.get("item")), String.join(" ", key.split("_")), "§aTe t\u00e9l\u00e9porte \u00e0 " + key));
-            final World wl = Bukkit.getWorld((String)a.get("world", "world"));
+            String nameItem = (String) a.get("item");
+            this.inv.addItem(this.createGuiItem(Material.getMaterial(nameItem), String.join(" ", key.split("_")), "§aTe t\u00e9l\u00e9porte \u00e0 " + key));
+            String nameWorld = (String) a.get("world", "world");
+            if (nameWorld == null) nameWorld = "world";
+            final World wl = Bukkit.getWorld(nameWorld);
             final Location lc = new Location(wl, (double)(int)a.get("x", "0"), (double)(int)a.get("y", "0"), (double)(int)a.get("z", "0"), Float.parseFloat((String)a.get("yaw", "0")), Float.parseFloat((String)a.get("pitch", "0")));
             this.lcs.add(lc);
             System.out.println("Le Warp " + String.join(" ", key.split("_")) + " est load");
@@ -68,8 +77,10 @@ public class WarpW implements Listener
             return;
         }
         final Player p = (Player)e.getWhoClicked();
-        p.teleport((Location)this.lcs.get(e.getRawSlot()));
-        p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 100.0f, 1.0f);
+        p.teleport((Location) this.lcs.get(e.getRawSlot()));
+        Location locale = p.getLocation();
+        if (locale != null)
+            p.playSound(locale, Sound.ENTITY_ARROW_HIT_PLAYER, 100.0f, 1.0f);
     }
 
     @EventHandler

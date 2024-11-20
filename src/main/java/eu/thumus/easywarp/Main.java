@@ -9,17 +9,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import eu.thumus.easywarp.warp.WarpPerso;
+import eu.thumus.easywarp.warp.WarpW;
+
 public final class Main extends JavaPlugin {
 
     public WarpW wr2;
     public WarpPerso wr3;
     public NewWarp nw;
     private Commands cmds;
-    private Logger console;
+    @SuppressWarnings("NonConstantLogger")
+    public Logger console;
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
+        console = getLogger();
         this.wr2 = new WarpW(this);
         this.wr3 = new WarpPerso(this);
         this.nw = new NewWarp(this);
@@ -28,7 +33,6 @@ public final class Main extends JavaPlugin {
         pm.registerEvents(this.wr2, this);
         pm.registerEvents(this.wr3, this);
         pm.registerEvents(this.nw, this);
-        console = getLogger();
         console.log(Level.INFO, "Le plugin s'est allumé");
     }
 
@@ -44,7 +48,6 @@ public final class Main extends JavaPlugin {
         try {
             return cmds.onCommand(sender, command, label, args);
         } catch (IOException ex) {
-            ex.printStackTrace();
             return false;
         }
     }
