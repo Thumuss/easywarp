@@ -10,7 +10,7 @@ permissions:
 jobs:
   minecraft-main:
     name: Compile
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu
     steps:
       - uses: actions/checkout@main
       - name: Set up JDK 21 for x64
