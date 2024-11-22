@@ -34,7 +34,7 @@ jobs:
           branch: dev
 
       - name: Compile with maven
-        run: mvn --batch-mode --update-snapshots package -Deasywarp.version=${{ steps.semver.outputs.next }}
+        run: mvn --batch-mode --update-snapshots package -Deasywarp.version=${{ steps.extract_branch.outputs.branch }}-${{ steps.semver.outputs.next }}
      
       - name: Create artifact directory
         shell: bash
