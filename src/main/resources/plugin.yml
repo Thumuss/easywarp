@@ -43,7 +43,7 @@ commands:
     description: Rename un item
     aliases: [rn, rname]
     permission: easywarp.rename
-    usage: /rename le nom que tu veux
+    usage: /rename <name of your choice>
   spec:
     description: Désactive/active le ramassage d'items
     aliases: [sp]
