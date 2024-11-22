@@ -6,7 +6,7 @@
 
   <groupId>eu.thumus</groupId>
   <artifactId>easywarp</artifactId>
-  <version>${env.EW_VERSION}</version>
+  <version>${easywarp.version}</version>
   <packaging>jar</packaging>
 
   <name>EasyWarp</name>

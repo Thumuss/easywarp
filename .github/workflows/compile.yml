@@ -30,9 +30,7 @@ jobs:
       - name: Compile with maven
         run: |
           EW_VERSION=${{ steps.semver.outputs.next }}
-          mvn --batch-mode --update-snapshots package
-
-
+          mvn --batch-mode --update-snapshots package -Deasywarp.version=${{ steps.semver.outputs.next }}
      
       - name: Create artifact directory
         shell: bash
