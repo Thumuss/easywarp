@@ -1,0 +1,57 @@
+on:
+  push:
+    branches:
+      - dev-*
+
+permissions:
+  contents: write
+  discussions: write
+
+jobs:
+  minecraft-main:
+    name: Compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Set up JDK 21 for x64
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          architecture: x64
+
+      - name: Get Next Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: dev
+
+      - name: Compile with maven
+        run: mvn --batch-mode --update-snapshots package -Deasywarp.version=${{ steps.extract_branch.outputs.branch }}-${{ steps.semver.outputs.next }}
+     
+      - name: Create artifact directory
+        shell: bash
+        run: |
+          directory=easywarp
+          mkdir $directory
+          cp README.md LICENSE $directory
+          cp target/easywarp-*.jar $directory
+          tar cJf $directory.tar.xz $directory
+          
+      - name: Create a Release [Nightly]
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          tag_name: nightly
+          generate_release_notes: true
+          files: |
+            easywarp.tar.*  
+      
