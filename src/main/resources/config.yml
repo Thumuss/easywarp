@@ -1,0 +1,23 @@
+# Prefix which inform player when using a command.
+prefix: Server -> §4
+#
+defaultMaterialName: DARK_OAK_BUTTON
+# Your warps
+warps:
+  # Default warp usable for all players to set their own warp
+  players:
+    # Where to store your file
+    filename: warp.yml
+    # Give the name of the inventory
+    display: Warp User
+    # Do you want to let your users to have different warp betweenthem?
+    usingPlayerUID: true
+    # Link to a specific command (only pwarp and warp are avalible)
+    linkTo: pwarp
+  
+  # Default warp usable for all players but the inventory is commun
+  ww:
+    filename: default.yml
+    display: Warp
+    usingPlayerUID: false
+    linkTo: warp

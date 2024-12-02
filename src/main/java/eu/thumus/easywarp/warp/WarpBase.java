@@ -34,38 +34,57 @@ public abstract class WarpBase implements Listener {
     public HashMap<String, ArrayList<Location>> lcs;
     protected FileConfiguration Fc;
     public File file;
-    protected  boolean usingPlayerUID = false;
+    protected boolean usingPlayerUID = false;
 
-    public static final String MATERIAL_NAME = "DARK_OAK_BUTTON";
+    public static String MATERIAL_NAME;
 
     final private String name;
-    final private String strKeyBase;
+    final private String strKey;
+    private String filename;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public WarpBase(final Main plugin, final String strKey, String name) {
-        this.create(plugin, strKey, name);
+    public WarpBase(final Main plugin, final String strKey, String name, boolean upuid, String filename) {
         this.name = name;
-        strKeyBase = strKey;
+        this.strKey = strKey;
+        this.filename = filename;
+        this.usingPlayerUID = upuid;
+        this.create(plugin, strKey, name, filename);
     }
 
-    public void create(Main plugin, String strKey, String name) {
+    public void create(Main plugin, String strKey, String name, String filename) {
         this.plugin = plugin;
-        Fc = plugin.warpConfig;
-        file = ConfigGenerator.SF.get("warp");
+        this.filename = filename;
+        Fc = ConfigGenerator.getOrCreateFC(filename);
+        file = ConfigGenerator.getOrCreateFileToSave(filename);
         lcs = new HashMap<>();
         inv = new HashMap<>();
     }
 
-    public void softCreate(final String strKey) {
-        Fc = plugin.warpConfig;
-        final ConfigurationSection playerStr = Fc.getConfigurationSection(strKey);
-        if (playerStr == null) {
-            Fc.createSection(strKey);
-            try {
-                Fc.save(file);
-            } catch (IOException e) {
-            }
+    protected ConfigurationSection getConfigurationSectionIfNotExist(String strKey) {
+        final ConfigurationSection section = Fc.getConfigurationSection(strKey);
+        if (section != null) {
+            return section;
         }
+        Fc.createSection(strKey);
+        try {
+            ConfigGenerator.save(filename);
+        } catch (IOException e) {
+        }
+        return Fc.getConfigurationSection(strKey);
+    }
+
+    public void softCreate(final String strKey) {
+        if (usingPlayerUID) softCreateUUID(strKey);
+        else softCreateNoUUID(strKey);
+    }
+
+    public void softCreateUUID(final String strKey) {
+        for (final Map.Entry<String, Object> entry : Fc.getConfigurationSection(strKey).getValues(false).entrySet()) {
+            softCreate(entry.getKey());
+        }
+    }
+    public void softCreateNoUUID(final String strKey) {
+        final ConfigurationSection playerStr = getConfigurationSectionIfNotExist(strKey);
         Map<String, Object> values = playerStr == null ? new HashMap<>() : playerStr.getValues(false);
         double size = values.size();
         double result = Math.ceil(size / 9.0) * 9.0;
@@ -75,6 +94,7 @@ public abstract class WarpBase implements Listener {
         createInv((int) result, values, name, strKey);
     }
 
+    
     protected void createInv(int size, Map<String, Object> values, String name, String strKey) {
         final ArrayList<Location> lcss = new ArrayList<>();
         Inventory invs = Bukkit.createInventory(null, size, name);
@@ -121,8 +141,8 @@ public abstract class WarpBase implements Listener {
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
         final Player p = (Player) e.getWhoClicked();
-        
-        String key = usingPlayerUID ? p.getUniqueId().toString() : strKeyBase ;
+
+        String key = usingPlayerUID ? p.getUniqueId().toString() : strKey;
         Inventory invs = this.inv.get(key);
 
         if (usingPlayerUID && e.getClickedInventory() != invs) {
@@ -140,6 +160,6 @@ public abstract class WarpBase implements Listener {
     }
 
     public void reload(final Main plugin) {
-        this.create(plugin, strKeyBase, name);
+        this.create(plugin, strKey, name, filename);
     }
 }

@@ -12,13 +12,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import eu.thumus.easywarp.Main;
 
 public class ConfigGenerator {
+
     public static HashMap<String, File> SF = new HashMap<>();
     public static HashMap<String, FileConfiguration> SFC = new HashMap<>();
+    private static Main mn;
 
-    public static FileConfiguration createConfig(Main main, String fileName, String name) {
-        File customConfigFile = new File(main.getDataFolder(), fileName);
+    public static FileConfiguration createConfig(Main main, String filename) {
+        mn = main;
+        final String name = String.join("-", filename.split("/"));
+        File customConfigFile = new File(main.getDataFolder(), filename);
 
-        FileConfiguration customConfig = new YamlConfiguration();
+        final FileConfiguration customConfig = new YamlConfiguration();
 
         if (!customConfigFile.exists()) {
             try {
@@ -27,7 +31,7 @@ public class ConfigGenerator {
                 customConfig.save(customConfigFile);
             } catch (IOException ex) {
             }
-        }
+        } 
 
         try {
             customConfig.load(customConfigFile);
@@ -38,8 +42,27 @@ public class ConfigGenerator {
         return customConfig;
     }
 
-    public static void save(String key) throws IOException {
-        FileConfiguration FC = SFC.get(key);
-        FC.save(SF.get(key));
+    public static FileConfiguration getOrCreateFC(String filename) {
+        String name = String.join("-", filename.split("/"));
+        if (SFC.containsKey(name)) {
+            return SFC.get(name);
+        }
+
+        return ConfigGenerator.createConfig(mn, filename);
+    }
+
+    public static File getOrCreateFileToSave(String filename) {
+        String name = String.join("-", filename.split("/"));
+        if (SFC.containsKey(name)) {
+            return SF.get(name);
+        }
+        ConfigGenerator.createConfig(mn, filename);
+        return SF.get(name);
+    }
+
+    public static void save(String filename) throws IOException {
+        String name = String.join("-", filename.split("/"));
+        FileConfiguration FC = ConfigGenerator.getOrCreateFC(name);
+        FC.save(SF.get(name));
     }
 }
