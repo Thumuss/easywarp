@@ -1,24 +1,41 @@
 package eu.thumus.easywarp;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import eu.thumus.easywarp.commands.WarpCommandsBase;
-import eu.thumus.easywarp.warp.WarpPerso;
-import eu.thumus.easywarp.warp.WarpW;
+import eu.thumus.easywarp.data.config.Config;
+import eu.thumus.easywarp.data.config.Warp;
+import eu.thumus.easywarp.warp.WarpUser;
+import eu.thumus.easywarp.warp.WarpWorldWide;
 
 public class Commands {
 
-    final private String prefix = "Server -> §4";
-    final private WarpCommandsBase WCB;
-    final private WarpCommandsBase WCPerso;
+    public HashMap<String, WarpCommandsBase> WCMap = new HashMap<>();
+
+    public HashMap<String, WarpCommandsBase> getWCMap() {
+        return WCMap;
+    }
+
+    public void setWCMap(HashMap<String, WarpCommandsBase> WCMap) {
+        this.WCMap = WCMap;
+    }
 
     public Commands(Main main) {
-        WCB = new WarpCommandsBase(main, new WarpW(main), "classic");
-        WCPerso = new WarpCommandsBase(main, new WarpPerso(main), "us");
+        for (Map.Entry<String, Warp> warpConfig : Config.getWarps().entrySet()) {
+            Warp w = warpConfig.getValue();
+            String key = warpConfig.getKey();
+            if (w.isUsingPlayerUID()) {
+                WCMap.put(key, new WarpCommandsBase(main, new WarpUser(main, key, w.getDisplay(), w.getDisplay()), key, w.getFilename()));
+            } else {
+                WCMap.put(key, new WarpCommandsBase(main, new WarpWorldWide(main, key, w.getDisplay(), w.getDisplay()), key, w.getFilename()));
+            }
+        }
     }
 
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) throws IOException {
@@ -27,47 +44,19 @@ public class Commands {
         }
         final Player pl = (Player) sender;
         String uid = pl.getUniqueId().toString();
-        return switch (command.getName().toLowerCase()) {
+        String commandName = command.getName().toLowerCase();
+        Warp wp = Config.getLinkedTo(commandName);
+        WarpCommandsBase wpcb = WCMap.get(wp.getName());
+        if (wpcb == null) {
+            return false;
+        }
+        return switch (commandName) {
             case "warp" ->
-                WCB.warpCmd(pl, command, label, args, "warp");
+                wpcb.warpCmd(pl, command, label, args, wp.getName());
             case "pwarp" ->
-                WCPerso.warpCmd(pl, command, label, args, "players." + uid);
-            case "ec" ->
-                ecCmd(sender, command, label, args);
-            case "rename" ->
-                renameCmd(sender, command, label, args);
-            case "setlore" ->
-                setloreCmd(sender, command, label, args);
-            case "wb" ->
-                wbCmd(sender, command, label, args);
-            case "spec" ->
-                specCmd(sender, command, label, args);
+                wpcb.warpCmd(pl, command, label, args, wp.getName() + "." + uid);
             default ->
-                throw new AssertionError();
+                throw new Error();
         };
-    }
-
-    public void sendMessage(Player pl, String msg) {
-        pl.sendMessage(prefix + msg);
-    }
-
-    public boolean ecCmd(final CommandSender sender, final Command command, final String label, final String[] args) {
-        return false;
-    }
-
-    public boolean wbCmd(final CommandSender sender, final Command command, final String label, final String[] args) {
-        return false;
-    }
-
-    public boolean specCmd(final CommandSender sender, final Command command, final String label, final String[] args) {
-        return false;
-    }
-
-    public boolean renameCmd(final CommandSender sender, final Command command, final String label, final String[] args) {
-        return false;
-    }
-
-    public boolean setloreCmd(final CommandSender sender, final Command command, final String label, final String[] args) {
-        return false;
     }
 }

@@ -16,26 +16,28 @@ import eu.thumus.easywarp.warp.WarpBase;
 
 public class WarpCommandsBase {
 
-    final private String prefix = "Server -> §4";
-    final private Main mn;
+    final private String prefix;
+    final private Main main;
     final private FileConfiguration customConfig;
-    final private WarpBase wb;
+    private WarpBase wb;
     final private String permission;
+    final private String filename;
 
-
-    public WarpCommandsBase(Main main, WarpBase wpb, String perm) {
-        mn = main;
-        customConfig = mn.warpConfig;
+    public WarpCommandsBase(Main mn, WarpBase wpb, String perm, String fn) {
+        main = mn;
         wb = wpb;
         permission = "easywarp." + perm;
+        prefix = mn.getConfig().getString("prefix", "Server -> §4");
+        filename = fn;
+        customConfig = ConfigGenerator.getOrCreateFC(filename);
     }
 
     public boolean warpCmd(final Player pl, final Command command, final String label, String[] args, String key) throws IOException {
         if (args.length == 0) {
             return warpUseCmd(pl, new String[0], key);
         }
-        String arg0 = args[0];
-        String[] newArgs = args.length == 0 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
+        final String arg0 = args[0];
+        final String[] newArgs = args.length == 0 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
 
         return switch (arg0) {
             case "delete" ->
@@ -61,7 +63,7 @@ public class WarpCommandsBase {
         Inventory invs = wb.inv.get(key);
         if (invs == null) {
             customConfig.createSection(key);
-            ConfigGenerator.save("warp");
+            ConfigGenerator.save(filename);
             wb.softCreate(key);
             invs = wb.inv.get(key);
         }
@@ -71,14 +73,14 @@ public class WarpCommandsBase {
 
     public boolean warpDeleteCmd(final Player pl, final String[] args, String key) throws IOException {
         if (!pl.hasPermission(permission + ".delete")) {
-            sendMessage(pl, "Tu ne peux pas utiliser cette commande !");
+            sendMessage(pl, prefix + "Tu ne peux pas utiliser cette commande !");
             return false;
         }
         final String path = key + "." + args[0];
         customConfig.set(String.valueOf(path), null);
-        ConfigGenerator.save("warp");
+        ConfigGenerator.save(filename);
         wb.softCreate(key);
-        sendMessage(pl, "Warp supprimé");
+        sendMessage(pl, "Warp supprimé"); //TODO
         return true;
     }
 
@@ -88,7 +90,7 @@ public class WarpCommandsBase {
 
     public boolean warpSetCmd(final Player pl, final String[] args, String key) throws IOException {
         if (!pl.hasPermission(permission + ".set")) {
-            sendMessage(pl, "Tu ne peux pas utiliser cette commande !");
+            sendMessage(pl, prefix + "Tu ne peux pas utiliser cette commande !");
             return false;
         }
         String item;
@@ -112,18 +114,31 @@ public class WarpCommandsBase {
         customConfig.set((path) + ".world", pl.getWorld().getName());
         ConfigGenerator.save("warp");
         wb.softCreate(key);
-        pl.sendMessage("Server → §4Warp ajoutée !");
+        pl.sendMessage(prefix + "Warp ajoutée !");
         return true;
     }
-    
 
-    
     public boolean warpReloadCmd(final Player pl, final String[] args, String key) {
-        return false;
+        if (!pl.hasPermission(permission + ".reload")) {
+            sendMessage(pl, "Tu ne peux pas utiliser cette commande !");
+            return false;
+        }
+        wb.reload(main);
+        pl.sendMessage(prefix + "§4Warp reload!");
+        return true;
     }
 
     public boolean warpEditCmd(final Player pl, final String[] args, String key) {
+        // TODO
         return false;
+    }
+
+    public WarpBase getWb() {
+        return wb;
+    }
+
+    public void setWb(WarpBase wb) {
+        this.wb = wb;
     }
 
 }
