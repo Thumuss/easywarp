@@ -1,0 +1,131 @@
+# EasyWarp Messages Français
+# Utilisez {0}, {1}, etc. pour les placeholders
+
+# Messages d'erreur de commande
+command:
+  use: "Vous n'avez pas la permission d'utiliser cette commande."
+  delete: "Vous n'avez pas la permission de supprimer des warps."
+  set: "Vous n'avez pas la permission de créer des warps."
+  reload: "Vous n'avez pas la permission de recharger les warps."
+  edit: "Vous n'avez pas la permission d'éditer des warps."
+  share: "Vous n'avez pas la permission de partager des warps."
+  public: "Vous n'avez pas la permission de rendre des warps publics."
+  rename: "Vous n'avez pas la permission de renommer des warps."
+  copy: "Vous n'avez pas la permission de copier des warps."
+  visit: "Vous n'avez pas la permission de visiter les warps d'autres joueurs."
+  favorite: "Vous n'avez pas la permission de marquer des warps comme favoris."
+  tpa: "Vous n'avez pas la permission d'envoyer des demandes de téléportation."
+  disabled: "Cette commande est actuellement désactivée."
+  no-args: "Veuillez spécifier un nom de warp."
+  invalid-material: "Matériau invalide : {0}. Utilisation du matériau par défaut."
+
+# Messages de succès
+success:
+  use: null  # null = pas de message
+  delete: "Le warp '{0}' a été supprimé."
+  set: "Le warp '{0}' a été créé à votre position."
+  reload: "Les warps ont été rechargés avec succès."
+  edit: "Le warp '{0}' a été mis à jour."
+  teleport: "Téléportation vers {0}..."
+  share: "Le warp '{0}' a été partagé avec {1}."
+  unshare: "Partage du warp '{0}' avec {1} arrêté."
+  public: "Le warp '{0}' est maintenant public."
+  private: "Le warp '{0}' est maintenant privé."
+  rename: "Le warp '{0}' a été renommé en '{1}'."
+  copy: "Le warp '{0}' a été copié vers '{1}'."
+  favorite-add: "Le warp '{0}' a été ajouté à vos favoris."
+  favorite-remove: "Le warp '{0}' a été retiré de vos favoris."
+  tpa-sent: "Demande de téléportation envoyée à {0}."
+  tpa-accepted: "Demande de téléportation acceptée."
+  tpa-denied: "Demande de téléportation refusée."
+  confirm: "Action confirmée."
+  cancel: "Action annulée."
+
+# Messages d'erreur
+error:
+  world-not-found: "Le monde '{0}' n'existe pas. Impossible de se téléporter."
+  warp-not-found: "Le warp '{0}' n'existe pas."
+  invalid-location: "Position de warp invalide. Veuillez contacter un administrateur."
+  teleport-failed: "Échec de la téléportation. Veuillez réessayer."
+  config-error: "Erreur lors du chargement de la configuration : {0}"
+  permission-error: "Erreur lors de l'enregistrement des permissions : {0}"
+  invalid-number: "Numéro invalide : {0}"
+  invalid-material: "Matériau invalide : {0}"
+  warp-exists: "Le warp '{0}' existe déjà."
+  warp-limit: "Vous avez atteint votre limite de warps ({0})."
+  not-warp-owner: "Vous n'êtes pas propriétaire de ce warp."
+  player-not-found: "Joueur '{0}' introuvable."
+  already-shared: "Le warp '{0}' est déjà partagé avec {1}."
+  not-shared: "Le warp '{0}' n'est pas partagé avec {1}."
+  max-shared-reached: "Vous avez atteint le nombre maximum de joueurs avec qui partager ({0})."
+  cooldown-active: "Vous devez attendre {0} secondes avant de vous téléporter à nouveau."
+  insufficient-funds: "Vous avez besoin de {0} pour faire cela."
+  warp-expired: "Ce warp a expiré."
+  conditions-not-met: "Vous ne remplissez pas les conditions : {0}"
+  warp-protected: "Ce warp est protégé. Utilisez /warp confirm pour continuer."
+  no-pending-confirmation: "Vous n'avez aucune confirmation en attente."
+  teleport-cancelled: "Téléportation annulée car vous avez bougé."
+
+# Messages d'information
+info:
+  prefix: "§6[EasyWarp] §r"
+  teleport-description: "§aTe téléporte à {0}"
+  warp-created-by: "§7Créé par : §f{0}"
+  warp-location: "§7Position : §f{0}, {1}, {2}"
+  warp-world: "§7Monde : §f{0}"
+  warp-visibility: "§7Visibilité : §f{0}"
+  warp-shared-with: "§7Partagé avec : §f{0}"
+  warp-uses: "§7Utilisations : §f{0}"
+  warp-created: "§7Créé : §f{0}"
+  warp-expires: "§7Expire : §f{0}"
+  warp-conditions: "§7Conditions : §f{0}"
+  no-warps: "Aucun warp disponible."
+  no-results: "Aucun warp trouvé correspondant à '{0}'."
+  warp-list-header: "§6=== Warps (Page {0}/{1}) ==="
+  warp-list-item: "§7- §6{0} §7({1})"
+  warp-list-footer: "§7Utilisez /warp list {0} pour la page suivante"
+  warps-count: "§7Vous avez §6{0}§7/§6{1}§7 warps"
+  warps-unlimited: "§7Vous avez §6{0}§7 warps (illimité)"
+  nearest-warp: "§7Warp le plus proche : §6{0}§7 ({1}m)"
+  tpa-request: "§6{0}§7 veut se téléporter à votre warp §6{1}§7. Utilisez §a/warp tpaccept§7 ou §c/warp tpdeny"
+  tpa-timeout: "Demande de téléportation expirée."
+  cooldown-ready: "§aVotre cooldown est terminé ! Vous pouvez maintenant vous téléporter à §6{0}§a."
+  warp-expiring: "§cVotre warp §6{0}§c expirera dans {1} !"
+  warp-shared-notification: "§a{0} a partagé son warp §6{1}§a avec vous !"
+  warp-updated-notification: "§aVotre warp §6{0}§a a été mis à jour."
+
+# Messages d'économie
+economy:
+  cost-warp-creation: "§7Coût de création : §6{0}"
+  cost-teleport: "§7Coût de téléportation : §6{0}"
+  refund-delete: "§7Remboursement : §6{0}"
+  charged-creation: "§7Vous avez été débité de §6{0}§7 pour créer ce warp."
+  charged-teleport: "§7Vous avez été débité de §6{0}§7 pour cette téléportation."
+  refunded: "§7Vous avez été remboursé de §6{0}§7."
+
+# Messages GUI
+gui:
+  title: "Warps"
+  previous-page: "§aPage Précédente"
+  next-page: "§aPage Suivante"
+  close: "§cFermer"
+  no-warps: "§7Aucun warp disponible"
+  filter-all: "§aTous les Warps"
+  filter-favorites: "§eWarps Favoris"
+  filter-public: "§bWarps Publics"
+  filter-shared: "§dWarps Partagés"
+  sort-name: "§7Tri : §fNom"
+  sort-date: "§7Tri : §fDate"
+  sort-uses: "§7Tri : §fPlus Utilisés"
+
+# Messages de confirmation
+confirmation:
+  delete: "supprimer le warp '{0}'"
+  overwrite: "écraser le warp '{0}'"
+  make-public: "rendre le warp '{0}' public"
+  request: "§cÊtes-vous sûr de vouloir {0} ?"
+  instructions: "§6Tapez /warp confirm pour continuer ou /warp cancel pour annuler."
+  timeout: "§7Ceci expirera dans {0} secondes."
+  expired: "§cConfirmation expirée."
+
+

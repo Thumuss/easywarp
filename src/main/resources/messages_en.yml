@@ -1,0 +1,131 @@
+# EasyWarp English Messages
+# Use {0}, {1}, etc. for placeholders
+
+# Command error messages
+command:
+  use: "You don't have permission to use this command."
+  delete: "You don't have permission to delete warps."
+  set: "You don't have permission to create warps."
+  reload: "You don't have permission to reload warps."
+  edit: "You don't have permission to edit warps."
+  share: "You don't have permission to share warps."
+  public: "You don't have permission to make warps public."
+  rename: "You don't have permission to rename warps."
+  copy: "You don't have permission to copy warps."
+  visit: "You don't have permission to visit other players' warps."
+  favorite: "You don't have permission to mark warps as favorites."
+  tpa: "You don't have permission to send teleport requests."
+  disabled: "This command is currently disabled."
+  no-args: "Please specify a warp name."
+  invalid-material: "Invalid material: {0}. Using default."
+  
+# Command success messages
+success:
+  use: null  # null = no message
+  delete: "Warp '{0}' has been deleted."
+  set: "Warp '{0}' has been created at your location."
+  reload: "Warps have been reloaded successfully."
+  edit: "Warp '{0}' has been updated."
+  teleport: "Teleporting to {0}..."
+  share: "Warp '{0}' has been shared with {1}."
+  unshare: "Stopped sharing warp '{0}' with {1}."
+  public: "Warp '{0}' is now public."
+  private: "Warp '{0}' is now private."
+  rename: "Warp '{0}' has been renamed to '{1}'."
+  copy: "Warp '{0}' has been copied to '{1}'."
+  favorite-add: "Warp '{0}' has been added to your favorites."
+  favorite-remove: "Warp '{0}' has been removed from your favorites."
+  tpa-sent: "Teleport request sent to {0}."
+  tpa-accepted: "Teleport request accepted."
+  tpa-denied: "Teleport request denied."
+  confirm: "Action confirmed."
+  cancel: "Action cancelled."
+
+# Error messages
+error:
+  world-not-found: "The world '{0}' doesn't exist. Unable to teleport."
+  warp-not-found: "Warp '{0}' doesn't exist."
+  invalid-location: "Invalid warp location. Please contact an administrator."
+  teleport-failed: "Failed to teleport. Please try again."
+  config-error: "Error loading configuration: {0}"
+  permission-error: "Error registering permissions: {0}"
+  invalid-number: "Invalid number: {0}"
+  invalid-material: "Invalid material: {0}"
+  warp-exists: "Warp '{0}' already exists."
+  warp-limit: "You've reached your warp limit ({0})."
+  not-warp-owner: "You don't own this warp."
+  player-not-found: "Player '{0}' not found."
+  already-shared: "Warp '{0}' is already shared with {1}."
+  not-shared: "Warp '{0}' is not shared with {1}."
+  max-shared-reached: "You've reached the maximum number of players to share with ({0})."
+  cooldown-active: "You must wait {0} seconds before teleporting again."
+  insufficient-funds: "You need {0} to do that."
+  warp-expired: "This warp has expired."
+  conditions-not-met: "You don't meet the requirements: {0}"
+  warp-protected: "This warp is protected. Use /warp confirm to proceed."
+  no-pending-confirmation: "You have no pending confirmation."
+  teleport-cancelled: "Teleportation cancelled because you moved."
+
+# Info messages
+info:
+  prefix: "§6[EasyWarp] §r"
+  teleport-description: "§aTeleports you to {0}"
+  warp-created-by: "§7Created by: §f{0}"
+  warp-location: "§7Location: §f{0}, {1}, {2}"
+  warp-world: "§7World: §f{0}"
+  warp-visibility: "§7Visibility: §f{0}"
+  warp-shared-with: "§7Shared with: §f{0}"
+  warp-uses: "§7Times used: §f{0}"
+  warp-created: "§7Created: §f{0}"
+  warp-expires: "§7Expires: §f{0}"
+  warp-conditions: "§7Requirements: §f{0}"
+  no-warps: "No warps available."
+  no-results: "No warps found matching '{0}'."
+  warp-list-header: "§6=== Warps (Page {0}/{1}) ==="
+  warp-list-item: "§7- §6{0} §7({1})"
+  warp-list-footer: "§7Use /warp list {0} for next page"
+  warps-count: "§7You have §6{0}§7/§6{1}§7 warps"
+  warps-unlimited: "§7You have §6{0}§7 warps (unlimited)"
+  nearest-warp: "§7Nearest warp: §6{0}§7 ({1}m away)"
+  tpa-request: "§6{0}§7 wants to teleport to your warp §6{1}§7. Use §a/warp tpaccept§7 or §c/warp tpdeny"
+  tpa-timeout: "Teleport request timed out."
+  cooldown-ready: "§aYour cooldown is ready! You can now teleport to §6{0}§a."
+  warp-expiring: "§cYour warp §6{0}§c will expire in {1}!"
+  warp-shared-notification: "§a{0} has shared their warp §6{1}§a with you!"
+  warp-updated-notification: "§aYour warp §6{0}§a has been updated."
+
+# Economy messages
+economy:
+  cost-warp-creation: "§7Cost to create warp: §6{0}"
+  cost-teleport: "§7Cost to teleport: §6{0}"
+  refund-delete: "§7Refund for deleting: §6{0}"
+  charged-creation: "§7You've been charged §6{0}§7 for creating this warp."
+  charged-teleport: "§7You've been charged §6{0}§7 for this teleportation."
+  refunded: "§7You've been refunded §6{0}§7."
+
+# GUI messages
+gui:
+  title: "Warps"
+  previous-page: "§aPrevious Page"
+  next-page: "§aNext Page"
+  close: "§cClose"
+  no-warps: "§7No warps available"
+  filter-all: "§aAll Warps"
+  filter-favorites: "§eFavorite Warps"
+  filter-public: "§bPublic Warps"
+  filter-shared: "§dShared Warps"
+  sort-name: "§7Sort: §fName"
+  sort-date: "§7Sort: §fDate"
+  sort-uses: "§7Sort: §fMost Used"
+
+# Confirmation messages
+confirmation:
+  delete: "delete warp '{0}'"
+  overwrite: "overwrite warp '{0}'"
+  make-public: "make warp '{0}' public"
+  request: "§cAre you sure you want to {0}?"
+  instructions: "§6Type /warp confirm to proceed or /warp cancel to abort."
+  timeout: "§7This will expire in {0} seconds."
+  expired: "§cConfirmation expired."
+
+

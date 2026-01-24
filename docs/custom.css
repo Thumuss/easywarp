@@ -1,0 +1,89 @@
+/* Custom CSS for EasyWarp Documentation */
+
+:root {
+    --color-primary: #4CAF50;
+    --color-secondary: #2196F3;
+    --color-warning: #FF9800;
+    --color-danger: #F44336;
+}
+
+/* Improve code blocks */
+pre {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Style tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+table th {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 12px;
+}
+
+table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Emoji support */
+img.emoji {
+    height: 1.2em;
+    width: 1.2em;
+    margin: 0 0.1em;
+    vertical-align: -0.1em;
+}
+
+/* Badges */
+img[alt*="badge"] {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+/* Admonitions */
+.warning, .info, .tip {
+    padding: 15px;
+    margin: 20px 0;
+    border-left: 4px solid;
+    border-radius: 4px;
+}
+
+.warning {
+    background-color: #fff3cd;
+    border-color: var(--color-warning);
+}
+
+.info {
+    background-color: #d1ecf1;
+    border-color: var(--color-secondary);
+}
+
+.tip {
+    background-color: #d4edda;
+    border-color: var(--color-primary);
+}
+
+/* Better blockquotes */
+blockquote {
+    border-left: 4px solid var(--color-secondary);
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 4px;
+}
+
+/* Checkmarks and crosses */
+.content li::before {
+    margin-right: 8px;
+}

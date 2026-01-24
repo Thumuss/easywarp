@@ -5,106 +5,38 @@ api-version: '1.13'
 author: Thumus <https://github.com/Thumuss>
 website: thumus.eu
 prefix: EasyWarp
+softdepend: [Vault, PlaceholderAPI]
 
 description: | 
   Un plugin pour faire des warp très facilement
-  Pour le moment uniquement en français.
-  /w help ou /help easywarp pour obtenir de l'aide
-
-commands:
-  ec:
-    description: Permet d'accéder à son ender chest
-    aliases: [enderchest]
-    permission: easywarp.ec.self
-    usage: /ec
-  warp:
-    description: Permet de se tp à une warp set par un admin
-    aliases: [w, wp]
-    permission: easywarp.warp.use
-    usage: |
-      /warp
-      /wp set Warp_Que_tu_Veux
-      /w set Warp_Que_tu_Veux stone
-      /w delete Warp_Que_tu_Veux
-      /w edit Warp_Que_tu_Veux chest
-      /w reload
-  pwarp:
-    description: Permet de se tp à un warp que tu as set.
-    aliases: [p, pw, pwp]
-    # permission: easywarp.pwarp.self.use
-    usage: |
-      /pwarp
-      /pwp set Warp_Que_tu_Veux
-      /pw set Warp_Que_tu_Veux stone
-      /p delete Warp_Que_tu_Veux
-      /p edit Warp_Que_tu_Veux chest
-      /p reload
-  rename:
-    description: Rename un item
-    aliases: [rn, rname]
-    permission: easywarp.rename
-    usage: /rename <name of your choice>
-  spec:
-    description: Désactive/active le ramassage d'items
-    aliases: [sp]
-    permission: easywarp.spec
-    usage: /spec
-  setlore:
-    description: Change le lore d'un item
-    aliases: [sl]
-    permission: easywarp.setlore
-    usage: /sl le message que tu veux;des points virgules pour changer;de;ligne. 
-  wb:
-    description: Ouvre une table de craft
-    aliases: [workbench]
-    permission: easywarp.wb
-    usage: /wb
-
+  Support multilingue (FR/EN)
+  Les commandes warp sont configurables dynamiquement via config.yml
+  
+  Commandes par défaut: /warp et /pwarp
 
 permissions:
   easywarp.*: 
     default: op
-    description: All permissions
+    description: All EasyWarp permissions
     children:
-      easywarp.ec.*: true
-      easywarp.rename: true
-      easywarp.setlore: true
-      easywarp.wb: true
-      easywarp.spec: true
       easywarp.warp.*: true
       easywarp.pwarp.*: true
-  easywarp.rename: 
-    default: not op
-    description: Can rename an item.
-  easywarp.setlore:
-    description: Can change the lore of an item
-  easywarp.wb:
-    default: op
-    description: Use a crafting table  
-  easywarp.spec:
-    default: op
-    description: Stop spec command
-  easywarp.ec.*:
-    default: op
-    description: Open an enderchest
-    children:
-      easywarp.ec.self: true
-      easywarp.ec.other: true
-  easywarp.ec.self:
-    default: op
-    description: Open your enderchest
-  easywarp.ec.other:
-    default: op
-    description: Open other enderchest
   easywarp.warp.*:
     default: op
-    description: All 
+    description: All warp permissions
     children:
         easywarp.warp.use: true
         easywarp.warp.set: true
         easywarp.warp.delete: true
         easywarp.warp.edit: true
         easywarp.warp.reload: true
+        easywarp.warp.share: true
+        easywarp.warp.public: true
+        easywarp.warp.favorite: true
+        easywarp.warp.rename: true
+        easywarp.warp.copy: true
+        easywarp.warp.visit: true
+        easywarp.warp.tpa: true
   easywarp.warp.use:
     default: not op
     description: Allow using warp
@@ -120,6 +52,51 @@ permissions:
   easywarp.warp.reload:
     default: op
     description: Allow reloading warp
+  easywarp.warp.share:
+    default: op
+    description: Allow sharing warps with other players
+  easywarp.warp.public:
+    default: op
+    description: Allow making warps public
+  easywarp.warp.favorite:
+    default: not op
+    description: Allow marking warps as favorites
+  easywarp.warp.rename:
+    default: op
+    description: Allow renaming warps
+  easywarp.warp.copy:
+    default: op
+    description: Allow copying warps
+  easywarp.warp.visit:
+    default: not op
+    description: Allow visiting other players' public warps
+  easywarp.warp.tpa:
+    default: not op
+    description: Allow sending teleport requests to warps
+  easywarp.limit.default:
+    default: not op
+    description: Default warp limit (5)
+  easywarp.limit.vip:
+    default: false
+    description: VIP warp limit (15)
+  easywarp.limit.premium:
+    default: false
+    description: Premium warp limit (50)
+  easywarp.limit.unlimited:
+    default: false
+    description: Unlimited warps
+  easywarp.bypass.cooldown:
+    default: op
+    description: Bypass teleportation cooldowns
+  easywarp.bypass.delay:
+    default: op
+    description: Bypass teleportation delays
+  easywarp.bypass.cost:
+    default: op
+    description: Bypass economy costs
+  easywarp.bypass.conditions:
+    default: op
+    description: Bypass warp conditions
   easywarp.pwarp.*:
     default: not op
     description: Allow all pwarp
