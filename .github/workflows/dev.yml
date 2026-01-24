@@ -27,15 +27,15 @@ jobs:
           distribution: 'temurin'
           architecture: x64
 
-      - name: Get Next Version
-        id: semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ github.token }}
-          branch: dev
+      # - name: Get Next Version
+      #   id: semver
+      #   uses: ietf-tools/semver-action@v1
+      #   with:
+      #     token: ${{ github.token }}
+      #     branch: dev
 
       - name: Compile with maven
-        run: mvn --batch-mode --update-snapshots package -Deasywarp.version=${{ steps.extract_branch.outputs.branch }}-${{ steps.semver.outputs.next }}
+        run: mvn --batch-mode --update-snapshots package -Deasywarp.version=${{ steps.extract_branch.outputs.branch }}
      
       - name: Create artifact directory
         shell: bash
@@ -46,13 +46,13 @@ jobs:
           cp target/easywarp-*.jar $directory
           tar cJf $directory.tar.xz $directory
           
-      - name: Create a Release [Nightly]
-        uses: softprops/action-gh-release@v2
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          tag_name: nightly
-          generate_release_notes: true
-          files: |
-            easywarp.tar.*  
+      # - name: Create a Release [Nightly]
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     token: "${{ secrets.GITHUB_TOKEN }}"
+      #     prerelease: false
+      #     tag_name: nightly
+      #     generate_release_notes: true
+      #     files: |
+      #       easywarp.tar.*  
       
