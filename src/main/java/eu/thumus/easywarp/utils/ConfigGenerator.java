@@ -27,15 +27,19 @@ public class ConfigGenerator {
         if (!customConfigFile.exists()) {
             try {
                 customConfigFile.getParentFile().mkdirs();
-                main.console.log(Level.INFO, customConfigFile.getAbsolutePath());
+                main.console.log(Level.INFO, "Creating config file: " + customConfigFile.getAbsolutePath());
                 customConfig.save(customConfigFile);
             } catch (IOException ex) {
+                main.console.log(Level.SEVERE, "Failed to create config file: " + filename, ex);
             }
         } 
 
         try {
             customConfig.load(customConfigFile);
-        } catch (IOException | InvalidConfigurationException e) {
+        } catch (IOException e) {
+            main.console.log(Level.SEVERE, "Failed to load config file: " + filename, e);
+        } catch (InvalidConfigurationException e) {
+            main.console.log(Level.SEVERE, "Invalid configuration in file: " + filename, e);
         }
         SF.put(name, customConfigFile);
         SFC.put(name, customConfig);
@@ -63,6 +67,22 @@ public class ConfigGenerator {
     public static void save(String filename) throws IOException {
         String name = String.join("-", filename.split("/"));
         FileConfiguration FC = ConfigGenerator.getOrCreateFC(name);
-        FC.save(SF.get(name));
+        File file = SF.get(name);
+        
+        if (file == null) {
+            if (mn != null) {
+                mn.console.log(Level.SEVERE, "Cannot save config: File not found for " + filename);
+            }
+            throw new IOException("File not found for: " + filename);
+        }
+        
+        try {
+            FC.save(file);
+        } catch (IOException e) {
+            if (mn != null) {
+                mn.console.log(Level.SEVERE, "Failed to save config file: " + filename, e);
+            }
+            throw e;
+        }
     }
 }

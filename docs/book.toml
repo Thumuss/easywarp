@@ -1,0 +1,19 @@
+[book]
+title = "EasyWarp Documentation"
+authors = ["Thumus"]
+description = "Complete documentation for EasyWarp - A flexible and powerful warp plugin for Minecraft"
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+git-repository-url = "https://github.com/Thumuss/EasyWarp"
+additional-css = ["custom.css"]
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.html.fold]
+enable = true
+level = 1

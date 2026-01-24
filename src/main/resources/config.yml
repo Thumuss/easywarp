@@ -1,8 +1,85 @@
 # Prefix which inform player when using a command.
 prefix: Server -> §4
-#
+# Default Material Name used when you set a warp without an item
 defaultMaterialName: DARK_OAK_BUTTON
-# Your warps
+# Language for messages (en, fr)
+locale: en
+
+# Cooldown settings (in seconds)
+cooldown:
+  enabled: true
+  default: 3  # Default cooldown time in seconds
+  bypass-permission: easywarp.cooldown.bypass  # Permission to bypass cooldowns
+
+# Teleportation delay (in seconds)
+teleportation:
+  delay: 0  # Delay before teleportation (0 = instant)
+  cancel-on-move: false  # Cancel teleportation if player moves
+
+# Economy integration (requires Vault)
+economy:
+  enabled: false
+  cost-per-warp-creation: 100  # Cost to create a new warp
+  cost-per-teleport: 10  # Cost per teleportation
+  refund-on-delete: 50  # Refund when deleting a warp
+
+# Warp limits per permission group
+warp-limits:
+  default: 5  # Default limit for all players
+  vip: 15  # Limit for players with easywarp.limit.vip
+  premium: 50  # Limit for players with easywarp.limit.premium
+  unlimited: -1  # -1 = unlimited (easywarp.limit.unlimited)
+
+# Temporary warps settings
+temporary-warps:
+  enabled: true
+  max-duration: 86400  # Maximum duration in seconds (24 hours)
+  cleanup-interval: 300  # Check for expired warps every 5 minutes
+
+# GUI settings
+gui:
+  rows: 6  # Inventory size (1-6)
+  fill-empty: true  # Fill empty slots
+  fill-material: GRAY_STAINED_GLASS_PANE
+  previous-page-slot: 45
+  next-page-slot: 53
+  sort-by: alphabetical  # Options: alphabetical, recent, most-used, favorites
+  show-lore: true  # Show custom lore in GUI
+
+# PlaceholderAPI integration
+placeholderapi:
+  enabled: true
+
+# Multi-world settings
+world-settings:
+  # Override settings per world
+  world_nether:
+    teleportation:
+      delay: 10
+    cooldown:
+      default: 120
+  world_the_end:
+    teleportation:
+      delay: 15
+    cooldown:
+      default: 180
+
+# Protection settings
+protection:
+  prevent-warp-overwrite: true  # Prevent accidentally overwriting existing warps
+  confirmation-required:
+    delete: true  # Require confirmation before deleting
+    edit: false
+  confirmation-timeout: 10  # Seconds before confirmation expires
+
+# Notifications
+notifications:
+  cooldown-ready: true  # Notify when cooldown is ready
+  warp-expiring-soon: true  # Notify 5 minutes before temp warp expires
+  warp-shared: true  # Notify when someone shares a warp with you
+  warp-updated: false  # Notify when a shared warp is updated
+# Your warps configuration
+# Each warp definition creates a system of warps with its own command
 warps:
   # Default warp usable for all players to set their own warp
   players:
@@ -10,14 +87,87 @@ warps:
     filename: warp.yml
     # Give the name of the inventory
     display: Warp User
-    # Do you want to let your users to have different warp betweenthem?
+    # Do you want to let your users to have different warp between them?
     usingPlayerUID: true
-    # Link to a specific command (only pwarp and warp are avalible)
-    linkTo: pwarp
+    # The command name that will be registered (e.g., /pwarp)
+    command: pwarp
+    # Aliases for the command
+    aliases: [p, pw, pwp]
+    # Description for the command
+    description: "Permet de se tp à un warp que tu as set."
+    # Usage help text
+    usage: |
+      /pwarp <name> - Teleport to warp
+      /pwarp set <name> [material] - Create warp
+      /pwarp delete <name> - Delete warp
+      /pwarp edit <name> <material|location|name|lore> - Edit warp
+      /pwarp rename <old> <new> - Rename warp
+      /pwarp copy <name> <new_name> - Copy warp
+      /pwarp share <name> <player> - Share warp with player
+      /pwarp public <name> - Make warp public
+      /pwarp private <name> - Make warp private
+      /pwarp visit <player> <name> - Visit player's public warp
+      /pwarp favorite <name> - Toggle favorite
+      /pwarp nearest - Find nearest warp
+      /pwarp random - Teleport to random warp
+      /pwarp tpa <name> <player> - Teleport player to your warp
+      /pwarp list [page] - List warps
+      /pwarp search <query> - Search warps
+      /pwarp info <name> - Warp information
+      /pwarp reload - Reload configuration
+    # Sharing settings
+    sharing:
+      enabled: true
+      allow-public: true
+      max-shared-with: 10  # Max players you can share one warp with
+    # Temporary warps
+    allow-temporary: true
+    # Advanced features
+    features:
+      favorites: true
+      custom-lore: true
+      protection: true
+      conditions: true
+    # Permissions configuration (optional - defaults will be generated if not specified)
+    permissions:
+      base: easywarp.players  # Base permission node
+      use: true      # Allow use command (easywarp.players.use)
+      set: true      # Allow set command (easywarp.players.set)
+      delete: true   # Allow delete command (easywarp.players.delete)
+      edit: true     # Allow edit command (easywarp.players.edit)
+      reload: true   # Allow reload command (easywarp.players.reload)
+      defaultFor:    # Which permissions are given by default
+        use: true    # Everyone can use by default
+        set: false   # Only with permission
+        delete: false
+        edit: false
+        reload: false
   
-  # Default warp usable for all players but the inventory is commun
+  # Default warp usable for all players but the inventory is common
   ww:
     filename: default.yml
     display: Warp
     usingPlayerUID: false
-    linkTo: warp
+    command: warp
+    aliases: [w, wp]
+    description: "Permet de se tp à une warp set par un admin"
+    usage: |
+      /warp
+      /wp set warp_anyname
+      /w set warp_anyname stone
+      /w delete warp_anyname
+      /w edit warp_anyname chest
+      /w reload
+    permissions:
+      base: easywarp.ww
+      use: true
+      set: true
+      delete: true
+      edit: true
+      reload: true
+      defaultFor:
+        use: true     # Everyone can use warps by default
+        set: false    # Only admins can set warps
+        delete: false
+        edit: false
+        reload: false

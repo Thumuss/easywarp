@@ -14,7 +14,7 @@ public final class Config {
 
     static String prefix = "Server -> §4";
     static Material defaultMaterialName = Material.DARK_OAK_BUTTON;
-    static HashMap<String, Warp> warps = new HashMap<>();
+    static HashMap<String, WarpConfig> warps = new HashMap<>();
 
     static public void createData(Main main) {
         FC = main.getConfig();
@@ -24,14 +24,22 @@ public final class Config {
         ConfigurationSection CS = FC.getConfigurationSection("warps");
         if (CS == null) return;
         for (String key : CS.getKeys(false)) {
-            warps.put(key, new Warp(CS.getConfigurationSection(key)));
+            warps.put(key, new WarpConfig(CS.getConfigurationSection(key)));
         }
     }
 
-    static public Warp getLinkedTo(String command) {
-        for (Warp warp : warps.values()) {
-            if (warp.linkTo.equals(command)) {
+    static public WarpConfig getWarpByCommand(String command) {
+        for (WarpConfig warp : warps.values()) {
+            if (warp.getCommand().equalsIgnoreCase(command)) {
                 return warp;
+            }
+            // Check aliases too
+            if (warp.getAliases() != null) {
+                for (String alias : warp.getAliases()) {
+                    if (alias.equalsIgnoreCase(command)) {
+                        return warp;
+                    }
+                }
             }
         }
         return null;
@@ -57,11 +65,11 @@ public final class Config {
         Config.defaultMaterialName = Material.getMaterial(defaultMaterialName);
     }
 
-    static public HashMap<String, Warp> getWarps() {
+    static public HashMap<String, WarpConfig> getWarps() {
         return Config.warps;
     }
 
-    static public void setWarps(HashMap<String, Warp> warps) {
+    static public void setWarps(HashMap<String, WarpConfig> warps) {
         Config.warps = warps;
     }
 }
